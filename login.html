@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="auth-card">
+    <h1>Welcome Back</h1>
+    <p>Login to register for college events.</p>
+
+    <form method="POST">
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Password</label>
+        <input type="password" name="password" required>
+
+        <button class="button full">Login</button>
+    </form>
+
+    <p class="muted">New student? <a href="{{ url_for('register') }}">Create an account</a></p>
+</div>
+{% endblock %}

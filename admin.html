@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container">
+    <div class="dashboard-header">
+        <div>
+            <p class="eyebrow">ADMIN PANEL</p>
+            <h1>Event Management</h1>
+        </div>
+        <a class="button" href="{{ url_for('create_event') }}">+ Create Event</a>
+    </div>
+
+    <h2>Events</h2>
+    <div class="grid">
+        {% for event in events %}
+        <article class="card">
+            <span class="badge">{{ event.category }}</span>
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.event_date.strftime('%d %b %Y, %I:%M %p') }}</p>
+            <p>{{ event.registrations|length }}/{{ event.capacity }} registered</p>
+            <form method="POST" action="{{ url_for('delete_event', event_id=event.id) }}">
+                <button class="danger-button" onclick="return confirm('Delete this event?')">Delete</button>
+            </form>
+        </article>
+        {% endfor %}
+    </div>
+
+    <h2>Participants</h2>
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Student</th>
+                <th>Email</th>
+                <th>Event</th>
+                <th>Certificate</th>
+            </tr>
+            {% for registration in registrations %}
+            <tr>
+                <td>{{ registration.user.name }}</td>
+                <td>{{ registration.user.email }}</td>
+                <td>{{ registration.event.title }}</td>
+                <td>
+                    <form class="inline-form" method="POST" action="{{ url_for('update_certificate', registration_id=registration.id) }}">
+                        <select name="status">
+                            <option {% if registration.certificate_status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option {% if registration.certificate_status == 'Issued' %}selected{% endif %}>Issued</option>
+                        </select>
+                        <button>Save</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+{% endblock %}

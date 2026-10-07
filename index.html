@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">COLLEGE EVENT PLATFORM</p>
+        <h1>Discover. Register. Participate.</h1>
+        <p>Find technical events, hackathons, cultural programs and workshops happening on campus.</p>
+    </div>
+</section>
+
+<section class="container">
+    <form class="search-box" method="GET">
+        <input name="q" placeholder="Search events..." value="{{ request.args.get('q','') }}">
+        <select name="category">
+            <option value="">All Categories</option>
+            <option value="Technical">Technical</option>
+            <option value="Hackathon">Hackathon</option>
+            <option value="Cultural">Cultural</option>
+            <option value="Sports">Sports</option>
+        </select>
+        <button>Search</button>
+    </form>
+
+    <div class="section-title">
+        <h2>Upcoming Events</h2>
+        <span>{{ events|length }} events</span>
+    </div>
+
+    <div class="grid">
+        {% for event in events %}
+        <article class="card">
+            <div class="card-top">
+                <span class="badge">{{ event.category }}</span>
+                <span>{{ event.event_date.strftime('%d %b %Y') }}</span>
+            </div>
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.description }}</p>
+            <div class="event-meta">
+                <span>📍 {{ event.venue }}</span>
+                <span>👥 {{ event.registrations|length }}/{{ event.capacity }}</span>
+            </div>
+            <a class="button" href="{{ url_for('event_details', event_id=event.id) }}">View Event</a>
+        </article>
+        {% else %}
+        <p>No events found.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

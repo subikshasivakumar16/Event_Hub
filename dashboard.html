@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container">
+    <div class="dashboard-header">
+        <div>
+            <p class="eyebrow">STUDENT DASHBOARD</p>
+            <h1>Hello, {{ user.name }} 👋</h1>
+        </div>
+        <a class="button" href="{{ url_for('index') }}">Explore Events</a>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><strong>{{ registrations|length }}</strong><span>Registrations</span></div>
+        <div class="stat"><strong>{{ registrations|selectattr('certificate_status','equalto','Issued')|list|length }}</strong><span>Certificates</span></div>
+    </div>
+
+    <h2>My Registrations</h2>
+
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Venue</th>
+                <th>Certificate</th>
+            </tr>
+            {% for registration in registrations %}
+            <tr>
+                <td>{{ registration.event.title }}</td>
+                <td>{{ registration.event.event_date.strftime('%d %b %Y') }}</td>
+                <td>{{ registration.event.venue }}</td>
+                <td><span class="status">{{ registration.certificate_status }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4">No registrations yet.</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+{% endblock %}
