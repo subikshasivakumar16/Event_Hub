@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+instance/
+college_events.db
+.pytest_cache/
